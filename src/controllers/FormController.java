@@ -49,8 +49,22 @@ public class FormController extends HttpServlet {
       BeanUtils.populate(user, request.getParameterMap());
 
       if (user.isComplete()) {
-        ResultSet resDB = database.executeSQL("INSERT INTO USER(username, password, email, name, surname, gender, birth, register)" +
-                "VALUES (" + user.getUsername() + ", " + user.getPassword() + ", " + user.getName() + ", " + user.getSurname() + ", " + user.getGender() + ", " + user.getBirth() + ", ggg)");
+        ResultSet userInfo  = database.executeSQL("SELECT username, email FROM USER WHERE username LIKE '" + user.getUsername() +"' OR email LIKE '" + user.getEmail() + "'");
+        int rowcount = 0;
+        if (userInfo.last()) {
+          rowcount = userInfo.getRow();
+          userInfo.beforeFirst();
+        }
+
+        if (rowcount > 0) {
+          request.setAttribute("user", user);
+          RequestDispatcher dispatcher = request.getRequestDispatcher("/Lab_2/Register.jsp");
+          dispatcher.forward(request, response);
+        } else {
+          int rows = database.updateSQL("INSERT INTO USER(username, password, email, name, surname, gender, birth)" +
+                  "VALUES ('" + user.getUsername() + "', '" + user.getPassword() + "', '" + user.getEmail() + "' ,'" + user.getName() + "', '" + user.getSurname() + "', '" + user.getGender() + "', STR_TO_DATE('" + user.getBirth() + "','%m-%d-%y'))");
+
+        }
       } else {
         // Put the bean into the request as an attribute
         request.setAttribute("user", user);

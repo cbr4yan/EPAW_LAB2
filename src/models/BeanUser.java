@@ -1,6 +1,9 @@
 package models;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class BeanUser implements Serializable  {
 
@@ -8,6 +11,7 @@ public class BeanUser implements Serializable  {
 
 	private String username = "";
 	private String password = "";
+	private String confirm_password = "";
 	private String email = "";
 	private String dob_day = "";
 	private String dob_month = "";
@@ -18,6 +22,14 @@ public class BeanUser implements Serializable  {
 
 	/*  Control which parameters have been correctly filled */
 	private int[] error = {0,0};
+
+	public String getConfirm_password() {
+		return confirm_password;
+	}
+
+	public void setConfirm_password(String confirm_password) {
+		this.confirm_password = confirm_password;
+	}
 
 	/* Getters */
 
@@ -46,15 +58,20 @@ public class BeanUser implements Serializable  {
 	}
 
 	public String getName() {
-		return name;
+		return name.isEmpty() ? null : name;
 	}
 
 	public String getSurname() {
-		return surname;
+		return surname.isEmpty() ? null : surname;
 	}
 
 	public String getGender() {
-		return gender;
+		return gender.isEmpty() ? null : gender;
+	}
+
+	public String getBirth()  {
+
+		return dob_month + "-" + dob_day + "-" + dob_year;
 	}
 
 	public int[] getError() {
@@ -64,6 +81,7 @@ public class BeanUser implements Serializable  {
 	/*Setters*/
 	public void setUsername(String username) {
 		this.username = username;
+		error[0] = 1;
 	}
 
 	public void setPassword(String password) {
@@ -72,6 +90,7 @@ public class BeanUser implements Serializable  {
 
 	public void setEmail(String email) {
 		this.email = email;
+		error[1] = 1;
 	}
 
 	public void setDob_day(String dob_day) {
@@ -97,6 +116,8 @@ public class BeanUser implements Serializable  {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
+
+
 
 	//public void setUser(String user){
 

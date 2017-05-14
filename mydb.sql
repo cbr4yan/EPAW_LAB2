@@ -12,7 +12,7 @@ CREATE TABLE USER (
   surname VARCHAR(255),
   gender VARCHAR(255),
   birth DATE,
-  register DATE,
+  register datetime NOT NULL DEFAULT NOW(),
 
   PRIMARY KEY (id)
 );

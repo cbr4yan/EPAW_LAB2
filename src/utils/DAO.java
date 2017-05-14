@@ -21,6 +21,10 @@ public class DAO {
     return statement.executeQuery(query);
   }
 
+  public int updateSQL(String query) throws SQLException {
+    return statement.executeUpdate(query);
+  }
+
   public void disconnectBD() throws SQLException {
     statement.close();
     connection.close();

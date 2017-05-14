@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"
-%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+         pageEncoding="ISO-8859-1" import="models.BeanUser" %>
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -27,6 +27,15 @@
   </style>
 </head>
 <body>
+<%
+  BeanUser user = null;
+  if (request.getAttribute("user")!=null) {
+    user = (BeanUser)request.getAttribute("user");
+  }
+  else {
+    user = new BeanUser();
+  }
+%>
 <div class="container">
   <div class="nav">
     <div class="nav-left">
@@ -56,8 +65,9 @@
           <form action="/Lab_2/FormController" method="post">
             <div class="field">
               <p class="control">
-                <input class="input" type="text" name="username" id="register-username" placeholder="Username"
-                       maxlength="30" required>
+                <input class="input" type="text" name="username" id="register-username" value="<%=user.getUsername()%>" placeholder="Username"
+                       maxlength="30" <%=user.getError()[0] == 1 ? "data-error-username=\"The username already exists in our DB!\"" : ""%> required>
+               <p id="register-username-error" class="help is-danger is-hidden"></p>
               </p>
             </div>
             <div class="field">
@@ -75,7 +85,7 @@
             </div>
             <div class="field">
               <p class="control">
-                <input class="input" type="email" name="email" id="register-email" placeholder="Email" maxlength="100"
+                <input class="input" type="email" name="email" id="register-email" value="<%=user.getEmail()%>" placeholder="Email" maxlength="100"
                        required>
               </p>
             </div>
@@ -92,15 +102,15 @@
                 <span class="select">
                   <select name="dob_month" id="register-dob-month" required>
                     <option disabled selected>Month</option>
-                    <option value="1">January</option>
-                    <option value="2">February</option>
-                    <option value="3">March</option>
-                    <option value="4">April</option>
-                    <option value="5">May</option>
-                    <option value="6">June</option>
-                    <option value="7">July</option>
-                    <option value="8">August</option>
-                    <option value="9">September</option>
+                    <option value="01">January</option>
+                    <option value="02">February</option>
+                    <option value="03">March</option>
+                    <option value="04">April</option>
+                    <option value="05">May</option>
+                    <option value="06">June</option>
+                    <option value="07">July</option>
+                    <option value="08">August</option>
+                    <option value="09">September</option>
                     <option value="10">October</option>
                     <option value="11">November</option>
                     <option value="12">December</option>
@@ -153,6 +163,45 @@
       </div>
     </div>
 </div>
-<script src="./public/main.js"></script>
+<script>
+    // validate password
+    var password = document.querySelector('#register-password');
+    var confirmPassword = document.querySelector('#register-confirm-password');
+
+    function isSamePassword(password, confirmPassword) {
+        if (password.value != confirmPassword.value) {
+            return false;
+        }
+        return true;
+    }
+
+    function validatePassword() {
+        var error = document.querySelector('#register-confirm-password-error');
+        error.innerText = 'Password doesn\'t match';
+
+        if (isSamePassword(password, confirmPassword)) {
+            confirmPassword.classList.remove('is-danger');
+            error.classList.add('is-hidden');
+        } else {
+            confirmPassword.classList.add('is-danger');
+            error.classList.remove('is-hidden');
+        }
+    }
+    confirmPassword.addEventListener('keyup', validatePassword);
+
+    //
+    var username = document.querySelector("#register-username");
+
+    function errorUsername() {
+        var error = document.querySelector('#register-username-error');
+        error.innerText = 'Username exist!';
+        username.classList.add('is-danger');
+        error.classList.remove('is-hidden');
+    }
+
+    if (username.dataset.errorUsername !== undefined) {
+        errorUsername();
+    }
+</script>
 </body>
 </html>
