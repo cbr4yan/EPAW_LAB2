@@ -22,3 +22,6 @@ function validatePassword() {
     }
 }
 confirmPassword.addEventListener('keyup', validatePassword);
+
+
+// send form

@@ -3,7 +3,7 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>Registration form</title>
+  <title>Sign Up</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.1/css/bulma.min.css"/>
   <style>
     #register-form {
@@ -27,47 +27,70 @@
   </style>
 </head>
 <body>
-<div id="register-form" class="container">
-  <div class="columns">
-    <div class="column is-4 is-offset-4">
-      <form action="">
-        <div class="field">
-          <p class="control">
-            <input class="input" type="text" name="username" id="register-username" placeholder="Username"
-                   maxlength="30" required>
-          </p>
-        </div>
-        <div class="field">
-          <p class="control">
-            <input class="input" type="password" name="password" id="register-password" placeholder="Password"
-                   maxlength="100" required>
-          </p>
-        </div>
-        <div class="field">
-          <p class="control">
-            <input class="input" type="password" name="confirm_password" id="register-confirm-password"
-                   placeholder="Confirm password" maxlength="100" required>
-          </p>
-          <p id="register-confirm-password-error" class="help is-danger is-hidden"></p>
-        </div>
-        <div class="field">
-          <p class="control">
-            <input class="input" type="email" name="email" id="register-email" placeholder="Email" maxlength="100"
-                   required>
-          </p>
-        </div>
-        <div class="field is-horizontal">
-          <div class="field-body">
+<div class="container">
+  <div class="nav">
+    <div class="nav-left">
+      <a class="nav-item">
+        Logo
+      </a>
+    </div>
+
+    <span class="nav-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+
+    <div class="nav-right nav-menu">
+      <a class="nav-item">
+        LOGIN
+      </a>
+      <a href="../Register.jsp" class="nav-item">
+        SIGN UP
+      </a>
+    </div>
+  </div>
+  <div class="section register-form">
+      <div class="columns">
+        <div class="column is-4 is-offset-4">
+          <form action="/Lab_2/FormController" method="post">
             <div class="field">
               <p class="control">
-                <input class="input" type="number" name="dob_day" id="register-dob-day" placeholder="Day" min="1"
-                       max="31" maxlength="2" required>
+                <input class="input" type="text" name="username" id="register-username" placeholder="Username"
+                       maxlength="30" required>
               </p>
             </div>
             <div class="field">
               <p class="control">
+                <input class="input" type="password" name="password" id="register-password" placeholder="Password"
+                       maxlength="100" required>
+              </p>
+            </div>
+            <div class="field">
+              <p class="control">
+                <input class="input" type="password" name="confirm_password" id="register-confirm-password"
+                       placeholder="Confirm password" maxlength="100" required>
+              </p>
+              <p id="register-confirm-password-error" class="help is-danger is-hidden"></p>
+            </div>
+            <div class="field">
+              <p class="control">
+                <input class="input" type="email" name="email" id="register-email" placeholder="Email" maxlength="100"
+                       required>
+              </p>
+            </div>
+            <div class="field is-horizontal">
+              <div class="field-body">
+                <div class="field">
+                  <p class="control">
+                    <input class="input" type="number" name="dob_day" id="register-dob-day" placeholder="Day" min="1"
+                           max="31" maxlength="2" required>
+                  </p>
+                </div>
+                <div class="field">
+                  <p class="control">
                 <span class="select">
-                  <select name="dob-month" id="register-dob-month" required>
+                  <select name="dob_month" id="register-dob-month" required>
                     <option disabled selected>Month</option>
                     <option value="1">January</option>
                     <option value="2">February</option>
@@ -83,53 +106,53 @@
                     <option value="12">December</option>
                   </select>
                 </span>
+                  </p>
+                </div>
+                <div class="field">
+                  <p class="control">
+                    <input class="input" type="text" name="dob_year" placeholder="Year" min="1900" max="2000" maxlength="4" required>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="field">
+              <p class="control">
+                <input class="input" type="text" name="name" placeholder="Name">
               </p>
             </div>
             <div class="field">
               <p class="control">
-                <input class="input" type="text" placeholder="Year" min="1900" max="2000" maxlength="4" required>
+                <input class="input" type="text" name="surname" placeholder="Surname">
               </p>
             </div>
-          </div>
+            <div class="field">
+              <p class="control">
+                <label for="register-male" class="radio">
+                  <input type="radio" id="register-male" value="male" name="gender">
+                  Male
+                </label>
+                <label for="register-female" class="radio">
+                  <input type="radio" id="register-female" value="female" name="gender">
+                  Female
+                </label>
+                <label for="register-other" class="radio">
+                  <input type="radio" id="register-other" value="other" name="gender">
+                  Other
+                </label>
+              </p>
+            </div>
+            <br>
+            <div class="field">
+              <p class="control is-expanded">
+                <input type="submit" class="button is-primary is-fullwidth" value="SIGN UP">
+              </p>
+            </div>
+          </form>
         </div>
-        <hr>
-        <div class="field">
-          <p class="control">
-            <input class="input" type="text" placeholder="Name">
-          </p>
-        </div>
-        <div class="field">
-          <p class="control">
-            <input class="input" type="text" placeholder="Surname">
-          </p>
-        </div>
-        <div class="field">
-          <p class="control">
-            <label for="register-male" class="radio">
-              <input type="radio" id="register-male" value="male" name="gender">
-              Male
-            </label>
-            <label for="register-female" class="radio">
-              <input type="radio" id="register-female" value="female" name="gender">
-              Female
-            </label>
-            <label for="register-other" class="radio">
-              <input type="radio" id="register-other" value="other" name="gender">
-              Other
-            </label>
-          </p>
-        </div>
-        <br>
-        <div class="field">
-          <p class="control is-expanded">
-            <input type="submit" class="button is-primary is-fullwidth" value="SIGN UP">
-          </p>
-        </div>
-      </form>
+      </div>
     </div>
-  </div>
 </div>
-
 <script src="./public/main.js"></script>
 </body>
 </html>
