@@ -23,7 +23,7 @@
         <a class="nav-item">
           LOGIN
         </a>
-        <a href="../Register.jsp" class="nav-item">
+        <a href="/Lab_2/Register.jsp" class="nav-item">
           SIGN UP
         </a>
       </div>

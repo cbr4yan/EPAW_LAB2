@@ -67,13 +67,14 @@
               <p class="control">
                 <input class="input" type="text" name="username" id="register-username" value="<%=user.getUsername()%>" placeholder="Username"
                        maxlength="30" <%=user.getError()[0] == 1 ? "data-error-username=\"The username already exists in our DB!\"" : ""%> required>
-               <p id="register-username-error" class="help is-danger is-hidden"></p>
+                <p id="register-username-error" class="help is-danger is-hidden"></p>
               </p>
             </div>
             <div class="field">
               <p class="control">
                 <input class="input" type="password" name="password" id="register-password" placeholder="Password"
                        maxlength="100" required>
+                <p id="register-email-error" class="help is-danger is-hidden"></p>     
               </p>
             </div>
             <div class="field">
@@ -86,7 +87,7 @@
             <div class="field">
               <p class="control">
                 <input class="input" type="email" name="email" id="register-email" value="<%=user.getEmail()%>" placeholder="Email" maxlength="100"
-                       required>
+                       <%=user.getError()[1] == 1 ? "data-error-email=\"The email already exists in our DB!\"" : ""%>required>
               </p>
             </div>
             <div class="field is-horizontal">
@@ -120,7 +121,7 @@
                 </div>
                 <div class="field">
                   <p class="control">
-                    <input class="input" type="text" name="dob_year" placeholder="Year" min="1900" max="2000" maxlength="4" required>
+                    <input class="input" type="text" id="register-dob-year" name="dob_year" placeholder="Year" min="1900" max="2000" maxlength="4" required>
                   </p>
                 </div>
               </div>
@@ -164,7 +165,22 @@
     </div>
 </div>
 <script>
-    // validate password
+
+	// Validate username doesn't exist on the DB
+	var username = document.querySelector("#register-username");
+	
+	function errorUsername() {
+	    var error = document.querySelector('#register-username-error');
+	    error.innerText = 'Username exists!';
+	    username.classList.add('is-danger');
+	    error.classList.remove('is-hidden');
+	}
+	
+	if (username.dataset.errorUsername !== undefined) {
+	    errorUsername();
+	}
+
+    // Validate password
     var password = document.querySelector('#register-password');
     var confirmPassword = document.querySelector('#register-confirm-password');
 
@@ -188,19 +204,19 @@
         }
     }
     confirmPassword.addEventListener('keyup', validatePassword);
-
-    //
-    var username = document.querySelector("#register-username");
-
-    function errorUsername() {
-        var error = document.querySelector('#register-username-error');
-        error.innerText = 'Username exist!';
-        username.classList.add('is-danger');
+    
+    
+    // Validate email  doesn't exist on the DB
+    var email = document.querySelector("#register-email");
+    function errorEmail() {
+        var error = document.querySelector('#register-email-error');
+        error.innerText = 'Email exists!';
+        email.classList.add('is-danger');
         error.classList.remove('is-hidden');
     }
 
-    if (username.dataset.errorUsername !== undefined) {
-        errorUsername();
+    if (email.dataset.errorEmail !== undefined) {
+        errorEmail();
     }
 </script>
 </body>
