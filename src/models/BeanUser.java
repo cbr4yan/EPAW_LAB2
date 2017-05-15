@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@SuppressWarnings("unused")
 public class BeanUser implements Serializable  {
 
 	private static final long serialVersionUID = 1L;
@@ -70,8 +71,8 @@ public class BeanUser implements Serializable  {
 	}
 
 	public String getBirth()  {
-
-		return dob_month + "-" + dob_day + "-" + dob_year;
+		
+		return dob_year + "-" + dob_month + "-" + dob_day;
 	}
 
 	public int[] getError() {

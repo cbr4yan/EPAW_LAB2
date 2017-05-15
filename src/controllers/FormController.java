@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /**
  * Servlet implementation class FormController
@@ -29,11 +31,8 @@ public class FormController extends HttpServlet {
   public FormController() {
     super();
 
-    try {
-      database = new DAO();
-    } catch (Exception e) {
-      System.out.println("Error en la creación de la conexión con la base de datos.");
-    }
+    database = new DAO();
+    database.connect();
   }
 
   /**
@@ -43,37 +42,48 @@ public class FormController extends HttpServlet {
 
     BeanUser user = new BeanUser();
 
+    
     try {
-
-      // Fill the bean with the request parmeters
-      BeanUtils.populate(user, request.getParameterMap());
-
-      if (user.isComplete()) {
-        ResultSet userInfo  = database.executeSQL("SELECT username, email FROM USER WHERE username LIKE '" + user.getUsername() +"' OR email LIKE '" + user.getEmail() + "'");
-        int rowcount = 0;
-        if (userInfo.last()) {
-          rowcount = userInfo.getRow();
-          userInfo.beforeFirst();
-        }
-
-        if (rowcount > 0) {
-          request.setAttribute("user", user);
-          RequestDispatcher dispatcher = request.getRequestDispatcher("/Lab_2/Register.jsp");
-          dispatcher.forward(request, response);
-        } else {
-          int rows = database.updateSQL("INSERT INTO USER(username, password, email, name, surname, gender, birth)" +
-                  "VALUES ('" + user.getUsername() + "', '" + user.getPassword() + "', '" + user.getEmail() + "' ,'" + user.getName() + "', '" + user.getSurname() + "', '" + user.getGender() + "', STR_TO_DATE('" + user.getBirth() + "','%m-%d-%y'))");
-
-        }
-      } else {
-        // Put the bean into the request as an attribute
-        request.setAttribute("user", user);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/Register.jsp");
-        dispatcher.forward(request, response);
-      }
-    } catch (IllegalAccessException | SQLException | InvocationTargetException e) {
-      e.printStackTrace();
-    }
+		
+		// Fill the bean with the request parameters
+		BeanUtils.populate(user, request.getParameterMap());
+		
+		if (user.isComplete()) {
+			ResultSet userInfo  = database.executeSQL("SELECT username, email FROM USER WHERE username LIKE '" + user.getUsername() +"' OR email LIKE '" + user.getEmail() + "'");
+			int rowcount = 0;
+			if (userInfo.last()) {
+				rowcount = userInfo.getRow();
+				userInfo.beforeFirst();
+			}
+			
+			// Existe alguna query con el mismo nombre de usuario o email.
+			if (rowcount != 0) {
+				
+				request.setAttribute("user", user);
+				RequestDispatcher dispatcher = request.getRequestDispatcher("Register.jsp");
+				dispatcher.forward(request, response);
+			}
+			else {
+	            SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy");
+	            java.util.Date utilDate = format.parse(user.getBirth());
+	            java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+	            
+	        	String query = "INSERT INTO USER(username, password, email, name, surname, gender, birth)" +
+	                    "VALUES ('" + user.getUsername() + "', '" + user.getPassword() + "', '" + user.getEmail() + "' ,'" + user.getName() + "', '" + user.getSurname() + "', '" + user.getGender() + "', '"+sqlDate+"')";
+	        	database.updateSQL(query);
+	        	}
+		}
+		else {
+			// Put the bean into the request as an attribute
+			request.setAttribute("user", user);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/Register.jsp");
+			dispatcher.forward(request, response);
+		}
+	}
+	catch (IllegalAccessException | SQLException |ParseException| InvocationTargetException e) {
+		e.printStackTrace();
+	}
+  
 
   }
 
